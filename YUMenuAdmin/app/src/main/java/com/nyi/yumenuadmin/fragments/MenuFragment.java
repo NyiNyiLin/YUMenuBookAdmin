@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.nyi.yumenuadmin.R;
 import com.nyi.yumenuadmin.adapters.MenuFragmentPagerAdapter;
 import com.nyi.yumenuadmin.data.VOs.ShopVO;
+import com.nyi.yumenuadmin.data.models.ShopModel;
 import com.nyi.yumenuadmin.utils.Constants;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class MenuFragment extends Fragment {
     TabLayout tabType;
 
     private ShopVO shopVO;
-    private List<String> shopTypeList;
+    private List<String> shopTypeList = new ArrayList<>();
     private String shopid;
     private MenuFragmentPagerAdapter menuFragmentPagerAdapter;
 
@@ -51,7 +52,7 @@ public class MenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
         ButterKnife.bind(this, view);
 
-        shopVO = getDummyShopVO();
+        shopVO = ShopModel.getobjInstance().getShopVO();
         shopTypeList = shopVO.getType();
         shopid = shopVO.getShopID();
 

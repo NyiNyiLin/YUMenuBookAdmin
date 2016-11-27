@@ -24,6 +24,18 @@ public class MenuItem {
         this.available = available;
     }
 
+    public void setAvailable(int available) {
+        this.available = available;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }

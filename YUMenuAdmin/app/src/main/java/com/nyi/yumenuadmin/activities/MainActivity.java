@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
@@ -15,13 +16,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.nyi.yumenuadmin.R;
 import com.nyi.yumenuadmin.YUMenuBookAdminApp;
 import com.nyi.yumenuadmin.adapters.MenuFragmentPagerAdapter;
+import com.nyi.yumenuadmin.data.VOs.ShopVO;
+import com.nyi.yumenuadmin.data.models.ShopModel;
 import com.nyi.yumenuadmin.fragments.MenuFragment;
+import com.nyi.yumenuadmin.utils.Constants;
+import com.nyi.yumenuadmin.utils.FirebaseUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.google.android.gms.internal.zzs.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivOpenLeftMenu;
 
     private ObjectAnimator leftAnimation;
-    private Animation animSlideRight;
-    private Animation animSlideLeft;
     private boolean isLeftMenuOpen = false;
     public MenuFragmentPagerAdapter fragmentPagerAdapter;
 
@@ -74,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, MenuFragment.newInstance()).commit();
+        getShopDataFromFirebase();
 
     }
 
@@ -141,5 +151,28 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    private void getShopDataFromFirebase(){
+        DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.SHOP).child("Shan Ma Lay");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(Constants.TAG, "Main Activity onData Change: " + dataSnapshot.getKey());
+                ShopVO shopVO = dataSnapshot.getValue(ShopVO.class);
+
+                ShopModel.getobjInstance().addAdminShop(shopVO);
+
+                Log.d(Constants.TAG, "Main Activity shop name: " + shopVO.getName());
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, MenuFragment.newInstance()).commit();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

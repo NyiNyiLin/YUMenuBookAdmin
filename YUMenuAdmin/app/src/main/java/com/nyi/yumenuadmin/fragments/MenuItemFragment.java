@@ -2,6 +2,7 @@ package com.nyi.yumenuadmin.fragments;
 
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.nyi.yumenuadmin.R;
 import com.nyi.yumenuadmin.YUMenuBookAdminApp;
 import com.nyi.yumenuadmin.adapters.MenuItemAdapter;
 import com.nyi.yumenuadmin.data.VOs.MenuItem;
 import com.nyi.yumenuadmin.utils.Constants;
+import com.nyi.yumenuadmin.utils.FirebaseUtil;
 import com.nyi.yumenuadmin.views.holders.MenuItemViewHolder;
 
 import java.util.ArrayList;
@@ -72,7 +78,6 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
         if(mMenuItemList == null){
             mMenuItemList = new ArrayList<>();
         }
-        getDummyData();
     }
 
     @Override
@@ -88,17 +93,21 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
         LinearLayoutManager layoutManager = new LinearLayoutManager(YUMenuBookAdminApp.getContext(), LinearLayoutManager.VERTICAL, false);
         rvMenuItem.setLayoutManager(layoutManager);
 
+        getMenuItemFromFirebase();
+
         return view;
     }
 
-    @Override
-    public void onTapAvailable() {
 
+    @Override
+    public void onTapAvailable(MenuItem menuItem) {
+        updateMenuItem(menuItem);
     }
 
     @Override
-    public void onTapEdit() {
-
+    public void onTapEdit(MenuItem menuItem) {
+        DialogFragment dialog = EditDialogFragment.newInstance(menuItem, mShopID, mShopType);
+        dialog.show(getChildFragmentManager(), "Update");
     }
 
     private void getDummyData(){
@@ -110,7 +119,7 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
     }
 
 
-    /*private void getMenuItemFromFirebase(){
+    private void getMenuItemFromFirebase(){
         DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.DETAIL).child(mShopID).child(Constants.MENUITEM).child(mShopType);
 
         ChildEventListener childEventListener = new ChildEventListener() {
@@ -151,6 +160,11 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
             }
         };
         ref.addChildEventListener(childEventListener);
-    }*/
+    }
 
+    private void updateMenuItem(MenuItem menuItem){
+        DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.DETAIL).child(mShopID).child(Constants.MENUITEM).child(mShopType).child(menuItem.getMenuItemID());
+        ref.setValue(menuItem);
+
+    }
 }

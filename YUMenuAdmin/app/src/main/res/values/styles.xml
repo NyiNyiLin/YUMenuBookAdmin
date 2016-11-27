@@ -25,4 +25,9 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
+    <style name="DialogeTextStyle">
+        <item name="android:textColor">@color/color_text</item>
+        <item name="android:padding">@dimen/margin_medium</item>
+    </style>
+
 </resources>

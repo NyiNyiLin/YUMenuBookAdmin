@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_large">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="@dimen/text_regular"
+        style="@style/DialogeTextStyle"/>
+
+    <EditText
+        android:id="@+id/et_dialoge_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fried Rice"
+        android:textSize="@dimen/text_regular_3x"
+        style="@style/DialogeTextStyle"
+        android:layout_marginBottom="@dimen/margin_medium_3"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        style="@style/DialogeTextStyle"/>
+
+    <EditText
+        android:id="@+id/et_dialoge_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fried Rice"
+        android:textSize="@dimen/text_regular_3x"
+        android:inputType="number"
+        style="@style/DialogeTextStyle"/>
+
+</LinearLayout>
