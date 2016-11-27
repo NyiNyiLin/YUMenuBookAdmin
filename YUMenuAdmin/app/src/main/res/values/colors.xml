@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f98915</color>
+    <color name="colorPrimaryDark">#e4861f</color>
+    <color name="colorAccent">#cd7a20</color>
+
+    <color name="color_text">#f98915</color>
+    <color name="bgColor">#ffa649</color>
+    <color name="left_bg_color">#fc952a</color>
+    <color name="left_bg_selected_color">#ffb364</color>
+    <color name="white">#fdfdfd</color>
+    <color name="card_background_color">#f5f5f5</color>
+
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="divider">#BDBDBD</color>
+
+    <!-- coffee -->
+    <color name="grey_white">#f5f5f5</color>
+    <color name="thistle">#d8d2d7</color>
+    <color name="manatee">#8892a1</color>
+    <color name="contessa">#d06b6b</color>
+    <color name="light_coral">#f88585</color>
+    <color name="mona_lisa">#ff8a8a</color>
+
+</resources>
