@@ -10,7 +10,7 @@
         android:id="@+id/cv_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/grey_white"
+        app:cardBackgroundColor="@color/card_background_color"
         app:cardCornerRadius="@dimen/card_corner_radius"
         app:cardElevation="@dimen/card_elevation">
 
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@string/app_name"
+                android:text="Shan Ma Lay"
                 android:textAllCaps="true"
                 android:textColor="@color/color_text"
                 android:textSize="@dimen/text_regular_3x"
@@ -141,7 +141,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_leftMenu_profile"
+            android:id="@+id/rl_leftMenu_review"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/left_menu_item_mergin"
@@ -158,15 +158,16 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_person_black_24dp"/>
+                    android:src="@drawable/ic_rate_review_black_24dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="PROFILE"
+                    android:text="Review"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_regular_2x" />
+                    android:textSize="@dimen/text_regular_2x"
+                    android:textAllCaps="true"/>
 
             </LinearLayout>
         </RelativeLayout>

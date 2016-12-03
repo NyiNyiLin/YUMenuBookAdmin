@@ -1,6 +1,7 @@
 package com.nyi.yumenuadmin.activities;
 
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -14,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -27,6 +29,7 @@ import com.nyi.yumenuadmin.adapters.MenuFragmentPagerAdapter;
 import com.nyi.yumenuadmin.data.VOs.ShopVO;
 import com.nyi.yumenuadmin.data.models.ShopModel;
 import com.nyi.yumenuadmin.fragments.MenuFragment;
+import com.nyi.yumenuadmin.fragments.ReviewFragment;
 import com.nyi.yumenuadmin.utils.Constants;
 import com.nyi.yumenuadmin.utils.FirebaseUtil;
 
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private float x1,x2;
     static final int MIN_DISTANCE = 150;
 
+    private final String LEFT_BG_SELECTED_COLOR = "#ffb364";
+    private final String LEFT_BG_COLOR = "#fc952a";
+
     @BindView(R.id.main_frame)
     FrameLayout frameLayout;
 
@@ -51,6 +57,18 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_open_left_menu)
     ImageView ivOpenLeftMenu;
+
+    @BindView(R.id.rl_leftMenu_menu)
+    RelativeLayout lefMenuMenu;
+
+    @BindView(R.id.rl_leftMenu_order)
+    RelativeLayout leftMenuOrder;
+
+    @BindView(R.id.rl_leftMenu_review)
+    RelativeLayout leftMenuReview;
+
+    @BindView(R.id.rl_leftMenu_info)
+    RelativeLayout leftMenuInfo;
 
     private ObjectAnimator leftAnimation;
     private boolean isLeftMenuOpen = false;
@@ -85,6 +103,31 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getShopDataFromFirebase();
+
+        lefMenuMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                leftMenuMenuClick();
+            }
+        });
+        leftMenuOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                leftMenuOrderClick();
+            }
+        });
+        leftMenuReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                leftMenuRevviewClick();
+            }
+        });
+        leftMenuInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                leftMenuInfoClick();
+            }
+        });
 
     }
 
@@ -174,5 +217,53 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void leftMenuMenuClick(){
+        lefMenuMenu.setBackgroundColor(Color.parseColor(LEFT_BG_SELECTED_COLOR));
+        leftMenuOrder.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuReview.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuInfo.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+
+        closeLeftMenu();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, MenuFragment.newInstance()).commit();
+    }
+
+    private void leftMenuOrderClick(){
+        lefMenuMenu.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuOrder.setBackgroundColor(Color.parseColor(LEFT_BG_SELECTED_COLOR));
+        leftMenuReview.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuInfo.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+
+        closeLeftMenu();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, MenuFragment.newInstance()).commit();
+    }
+
+    private void leftMenuRevviewClick(){
+        lefMenuMenu.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuOrder.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuReview.setBackgroundColor(Color.parseColor(LEFT_BG_SELECTED_COLOR));
+        leftMenuInfo.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+
+        closeLeftMenu();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, ReviewFragment.newInstance()).commit();
+    }
+
+    private void leftMenuInfoClick(){
+        lefMenuMenu.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuOrder.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuReview.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
+        leftMenuInfo.setBackgroundColor(Color.parseColor(LEFT_BG_SELECTED_COLOR));
+
+        closeLeftMenu();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, ReviewFragment.newInstance()).commit();
+    }
+
+    private void closeLeftMenu(){
+        if(isLeftMenuOpen == true){
+            leftAnimation.reverse();
+
+            isLeftMenuOpen = false;
+        }
     }
 }
