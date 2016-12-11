@@ -29,6 +29,7 @@ import com.nyi.yumenuadmin.adapters.MenuFragmentPagerAdapter;
 import com.nyi.yumenuadmin.data.VOs.ShopVO;
 import com.nyi.yumenuadmin.data.models.ShopModel;
 import com.nyi.yumenuadmin.fragments.MenuFragment;
+import com.nyi.yumenuadmin.fragments.OrderFragment;
 import com.nyi.yumenuadmin.fragments.ReviewFragment;
 import com.nyi.yumenuadmin.utils.Constants;
 import com.nyi.yumenuadmin.utils.FirebaseUtil;
@@ -226,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         leftMenuInfo.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
 
         closeLeftMenu();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, MenuFragment.newInstance()).commit();
+        getShopDataFromFirebase();
     }
 
     private void leftMenuOrderClick(){
@@ -236,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         leftMenuInfo.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
 
         closeLeftMenu();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, MenuFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, OrderFragment.newInstance()).commit();
     }
 
     private void leftMenuRevviewClick(){
