@@ -10,6 +10,7 @@ public class OrderVO{
     private String orderID;
     private String date;
     private String time;
+    private int total;
 
     private String userName;
     private String userPhone;
@@ -24,13 +25,14 @@ public class OrderVO{
         this.time = time;
     }
 
-    public OrderVO(String userName, String userPhone, String orderID, String shopName, String date, String time) {
+    public OrderVO(String userName, String userPhone, String orderID, String shopName, String date, String time, int total) {
         this.userName = userName;
         this.userPhone = userPhone;
         this.orderID = orderID;
         this.shopName = shopName;
         this.date = date;
         this.time = time;
+        this.total = total;
     }
 
     public String getShopName() {
@@ -81,5 +83,11 @@ public class OrderVO{
         this.userPhone = userPhone;
     }
 
+    public int getTotal() {
+        return total;
+    }
 
+    public void setTotal(int total) {
+        this.total = total;
+    }
 }

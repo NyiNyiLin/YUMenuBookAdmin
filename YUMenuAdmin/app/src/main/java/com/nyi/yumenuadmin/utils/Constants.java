@@ -13,6 +13,8 @@ public class Constants {
     public static final int AVAILABLE = 1;
     public static final int NOT_AVAILABLE = 0;
 
+    public static final String PREF = "MyPref";
+
     //Firebase location path
     public static final String DETAIL = "Detail";
     public static final String SHOP = "Shop";
@@ -20,6 +22,9 @@ public class Constants {
     public static final String REVIEW = "Review";
     public static final String ORDER = "Order";
     public static final String ORDER_ITEM = "Item";
+    public static final String ADMIN = "Admin";
+
+    //MenuItem Add New or Update Constant
 
     public static final String DUMMY_LINK = "Dummy Link";
 }

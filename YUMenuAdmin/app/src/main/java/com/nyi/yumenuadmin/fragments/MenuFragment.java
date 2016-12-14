@@ -56,6 +56,8 @@ public class MenuFragment extends Fragment {
         shopTypeList = shopVO.getType();
         shopid = shopVO.getShopID();
 
+        Log.d(Constants.TAG, "MenuFragment shopItem List size " + shopTypeList.size());
+
         menuFragmentPagerAdapter = new MenuFragmentPagerAdapter(getFragmentManager());
 
         for(String s: shopTypeList){

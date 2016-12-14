@@ -1,6 +1,8 @@
 package com.nyi.yumenuadmin.activities;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -28,6 +31,7 @@ import com.nyi.yumenuadmin.YUMenuBookAdminApp;
 import com.nyi.yumenuadmin.adapters.MenuFragmentPagerAdapter;
 import com.nyi.yumenuadmin.data.VOs.ShopVO;
 import com.nyi.yumenuadmin.data.models.ShopModel;
+import com.nyi.yumenuadmin.fragments.InfoFragment;
 import com.nyi.yumenuadmin.fragments.MenuFragment;
 import com.nyi.yumenuadmin.fragments.OrderFragment;
 import com.nyi.yumenuadmin.fragments.ReviewFragment;
@@ -71,15 +75,29 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.rl_leftMenu_info)
     RelativeLayout leftMenuInfo;
 
+    @BindView(R.id.tv_main_title)
+    TextView tvTitle;
+
     private ObjectAnimator leftAnimation;
     private boolean isLeftMenuOpen = false;
     public MenuFragmentPagerAdapter fragmentPagerAdapter;
+
+    private String shopID;
+    public static final String PARAM_shopID = "shopID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this, this);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.PREF, MODE_PRIVATE);
+        shopID = pref.getString(PARAM_shopID, null);
+        if(shopID == null){
+            Intent intent = LogInActivity.newIntent();
+            startActivity(intent);
+        }
+
 
         leftAnimation = ObjectAnimator.ofFloat(
                 cardViewMain,
@@ -198,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getShopDataFromFirebase(){
-        DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.SHOP).child("Shan Ma Lay");
+        DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.SHOP).child(shopID);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -209,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
                 ShopModel.getobjInstance().addAdminShop(shopVO);
 
                 Log.d(Constants.TAG, "Main Activity shop name: " + shopVO.getName());
+                tvTitle.setText(shopVO.getName());
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, MenuFragment.newInstance()).commit();
 
             }
@@ -227,7 +246,8 @@ public class MainActivity extends AppCompatActivity {
         leftMenuInfo.setBackgroundColor(Color.parseColor(LEFT_BG_COLOR));
 
         closeLeftMenu();
-        getShopDataFromFirebase();
+        //getShopDataFromFirebase();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, MenuFragment.newInstance()).commit();
     }
 
     private void leftMenuOrderClick(){
@@ -257,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         leftMenuInfo.setBackgroundColor(Color.parseColor(LEFT_BG_SELECTED_COLOR));
 
         closeLeftMenu();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, ReviewFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, InfoFragment.newInstance()).commit();
     }
 
     private void closeLeftMenu(){

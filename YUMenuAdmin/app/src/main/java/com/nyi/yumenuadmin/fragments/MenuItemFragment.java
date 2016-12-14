@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -48,6 +49,8 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
     @BindView(R.id.rv_menuItem)
     RecyclerView rvMenuItem;
 
+    @BindView(R.id.btn_menu_item_add)
+    Button btnItemAdd;
 
     private List<MenuItem> mMenuItemList;
     private MenuItemAdapter menuItemAdapter;
@@ -78,6 +81,7 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
         if(mMenuItemList == null){
             mMenuItemList = new ArrayList<>();
         }
+        Log.d(Constants.TAG, "MenuItemFragment onCreate" + mShopID + " + " + mShopType);
     }
 
     @Override
@@ -87,6 +91,8 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
         View view = inflater.inflate(R.layout.fragment_menu_item, container, false);
         ButterKnife.bind(this, view);
 
+        Log.d(Constants.TAG, "MenuItemFragment onCreate View" + mShopID + " + " + mShopType);
+
         menuItemAdapter = new MenuItemAdapter(mMenuItemList, this);
         rvMenuItem.setAdapter(menuItemAdapter);
 
@@ -94,6 +100,14 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
         rvMenuItem.setLayoutManager(layoutManager);
 
         getMenuItemFromFirebase();
+
+        btnItemAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialog = EditDialogFragment.newInstance(mShopID, mShopType);
+                dialog.show(getChildFragmentManager(), "Add");
+            }
+        });
 
         return view;
     }
@@ -121,6 +135,8 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
 
     private void getMenuItemFromFirebase(){
         DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.DETAIL).child(mShopID).child(Constants.MENUITEM).child(mShopType);
+
+        Log.d(Constants.TAG, "MenuItemFragment getMenuItemChild" + mShopID + " + " + mShopType);
 
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -165,6 +181,5 @@ public class MenuItemFragment extends Fragment implements MenuItemViewHolder.Con
     private void updateMenuItem(MenuItem menuItem){
         DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.DETAIL).child(mShopID).child(Constants.MENUITEM).child(mShopType).child(menuItem.getMenuItemID());
         ref.setValue(menuItem);
-
     }
 }

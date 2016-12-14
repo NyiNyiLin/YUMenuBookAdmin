@@ -44,8 +44,8 @@ public class OrderViewHolder extends RecyclerView.ViewHolder{
     @BindView(R.id.tv_item_order_time)
     TextView tvOrderTime;
 
-    @BindView(R.id.btn_item_order)
-    Button btnOrder;
+    @BindView(R.id.btn_item_order_total)
+    Button btnOrderTotal;
 
     @BindView(R.id.rv_item_order_item)
     RecyclerView rvOrderItem;
@@ -72,8 +72,9 @@ public class OrderViewHolder extends RecyclerView.ViewHolder{
     public void bindData(OrderVO orderVO){
         tvShopName.setText(orderVO.getUserName());
         tvOrderId.setText("");
-        tvDate.setText(orderVO.getUserPhone());
+        tvDate.setText("( " + orderVO.getUserPhone() + " )");
         tvOrderTime.setText(orderVO.getTime());
+        btnOrderTotal.setText(orderVO.getTotal() + "");
 
         //dummyDat();
         mOrderItemAdapter.setOrderItemVOList(mOrderItemVOList);

@@ -43,10 +43,15 @@ public class EditDialogFragment extends DialogFragment {
     private static final String ARG_AVAIL = "available";
     private static final String ARG_SHOP_ID = "shopID";
     private static final String ARG_SHOP_TYPE = "shopType";
+    private static final String ARG_IS_NEW = "isNew";
+
+    private String btnText;
+    private boolean isNew;
 
     private MenuItem menuItem;
     private String shopID;
     private String shopType;
+
 
     public static EditDialogFragment newInstance(MenuItem menuItem, String shopID, String shopType){
         EditDialogFragment editDialogFragment = new EditDialogFragment();
@@ -58,6 +63,21 @@ public class EditDialogFragment extends DialogFragment {
         args.putString(ARG_SHOP_ID, shopID);
         args.putString(ARG_SHOP_TYPE, shopType);
 
+        args.putBoolean(ARG_IS_NEW, false);
+
+        editDialogFragment.setArguments(args);
+
+        return editDialogFragment;
+    }
+
+    public static EditDialogFragment newInstance(String shopID, String shopType){
+        EditDialogFragment editDialogFragment = new EditDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_SHOP_ID, shopID);
+        args.putString(ARG_SHOP_TYPE, shopType);
+
+        args.putBoolean(ARG_IS_NEW, true);
+
         editDialogFragment.setArguments(args);
 
         return editDialogFragment;
@@ -68,10 +88,20 @@ public class EditDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         menuItem = new MenuItem();
         if (getArguments() != null) {
-            menuItem.setMenuItemID(getArguments().getString(ARG_MENUITEMID));
-            menuItem.setName(getArguments().getString(ARG_NAME));
-            menuItem.setPrice(getArguments().getInt(ARG_PRICE));
-            menuItem.setAvailable(getArguments().getInt(ARG_AVAIL));
+
+            if(getArguments().getBoolean(ARG_IS_NEW)){
+                btnText = "Add";
+                isNew = true;
+
+            }else {
+                menuItem.setMenuItemID(getArguments().getString(ARG_MENUITEMID));
+                menuItem.setName(getArguments().getString(ARG_NAME));
+                menuItem.setPrice(getArguments().getInt(ARG_PRICE));
+                menuItem.setAvailable(getArguments().getInt(ARG_AVAIL));
+
+                btnText = "Update";
+                isNew = false;
+            }
 
             shopID = getArguments().getString(ARG_SHOP_ID);
             shopType = getArguments().getString(ARG_SHOP_TYPE);
@@ -98,13 +128,14 @@ public class EditDialogFragment extends DialogFragment {
         builder.setView(view);
 
         // Add action buttons
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(btnText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         menuItem.setName(etDialogeName.getText().toString());
                         menuItem.setPrice(Integer.parseInt(etDialogePrice.getText().toString()));
 
-                        onTapUpdate();
+                        if(isNew) onTapNew();
+                        else onTapUpdate();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -113,12 +144,25 @@ public class EditDialogFragment extends DialogFragment {
                     }
                 });
 
+        if(!isNew)builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.DETAIL).child(shopID).child(Constants.MENUITEM).child(shopType).child(menuItem.getMenuItemID());
+                ref.removeValue();
+            }
+        });
+
         return builder.create();
+    }
+
+    private void onTapNew() {
+        menuItem.setAvailable(Constants.AVAILABLE);
+        DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.DETAIL).child(shopID).child(Constants.MENUITEM).child(shopType);
+        ref.push().setValue(menuItem);
     }
 
     private void onTapUpdate(){
         DatabaseReference ref = FirebaseUtil.getObjInstance().getDatabaseReference().child(Constants.DETAIL).child(shopID).child(Constants.MENUITEM).child(shopType).child(menuItem.getMenuItemID());
         ref.setValue(menuItem);
-
     }
 }
